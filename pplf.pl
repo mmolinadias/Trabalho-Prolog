@@ -33,7 +33,7 @@ header:-
 
 % realiza o diagnostico
 diagnostico:-
-    diagnostico(Sintoma).
+    diagnostico(_).
 
 % cadastro de novo paciente
 
