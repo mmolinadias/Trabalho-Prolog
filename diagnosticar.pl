@@ -191,6 +191,15 @@ imprime_doencas(Prob) :-
     write(Prob3),
     writeln('%').
 
+% Função que mostra os sintomas que o paciente nao tem da doença mais provavel
+sintomas_faltantes(Prob, SintomaPaciente) :-
+    nth0(9, Prob, (P1, D1)),
+    % findall(SintomaDoenca, sintoma(Doenca, SintomaDoenca), SintomasDoenca),
+    findall(Sintoma, sintoma(D1, Sintoma), SintomasDoenca),
+    % findall(Sintomas, sintoma(D1, Sintoma), TodosSintomas),
+    subtract(SintomasDoenca, SintomaPaciente, SintomasFaltantes),
+    writeln('Sintomas que voce nao tem:'),
+    writeln(SintomasFaltantes).
 
 sintomas(ListaSintomas) :- 
     findall(Sintomas, sintoma(_, Sintomas), ListaSintomas).
@@ -210,7 +219,14 @@ diagnostico(_) :-
     probabilidade_doencas(Prob, SintomaPaciente),
     imprime_doencas(Prob),
     nl,
-    writeln('O resultado do prototipo e apenas informativo e que o paciente deve consultar um medico para obter um diagnostico correto e preciso.').
+    writeln('O resultado do prototipo e apenas informativo e que o paciente deve consultar um medico para obter um diagnostico correto e preciso.'),
+    writeln('Deseja saber mais sobre a doença mais provavel?'),
+    read(Resposta),
+    ((Resposta == sim ; Resposta == s) -> 
+        sintomas_faltantes(Prob, SintomaPaciente)
+    ;
+        true
+    ).
 
 
 imprimir_diagnostico([], SintomaPaciente, SintomaPaciente) :- !.
